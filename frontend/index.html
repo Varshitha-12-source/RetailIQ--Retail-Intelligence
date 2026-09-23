@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RetailIQ | AI Retail Intelligence</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 22px 42px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+        }
+
+        .brand h1 {
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand p {
+            color: #aeb8c8;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .backend-status {
+            background: #064e3b;
+            color: #a7f3d0;
+            padding: 9px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 1450px;
+            margin: auto;
+            padding: 30px 35px 60px;
+        }
+
+        .section-title {
+            font-size: 21px;
+            margin: 34px 0 17px;
+            color: #172033;
+        }
+
+        .section-subtitle {
+            color: #718096;
+            font-size: 14px;
+            margin-top: -8px;
+            margin-bottom: 18px;
+        }
+
+        /* ================= KPI ================= */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+
+            border: 1px solid #e7ebf2;
+
+            box-shadow:
+                0 4px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .kpi-label {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .kpi-value {
+            margin-top: 9px;
+            font-size: 27px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .kpi-small {
+            margin-top: 7px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* ================= GRID ================= */
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .full-card {
+            margin-top: 22px;
+        }
+
+        /* ================= CARD ================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e7ebf2;
+            border-radius: 17px;
+            padding: 23px;
+
+            box-shadow:
+                0 4px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .card-description {
+            color: #7b8798;
+            font-size: 13px;
+            margin-top: 5px;
+            margin-bottom: 18px;
+        }
+
+        .chart-box {
+            height: 350px;
+        }
+
+        .monthly-chart {
+            height: 390px;
+        }
+
+        /* ================= PRODUCT CARDS ================= */
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 17px;
+            overflow: hidden;
+
+            border: 1px solid #e7ebf2;
+
+            box-shadow:
+                0 4px 18px rgba(15, 23, 42, 0.05);
+
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .product-image {
+            height: 155px;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #f1f5f9;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* fallback if image fails */
+
+        .image-fallback {
+            background:
+                linear-gradient(
+                    135deg,
+                    #e2e8f0,
+                    #f8fafc
+                );
+        }
+
+        .image-fallback::after {
+            content: "Image unavailable";
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 17px;
+        }
+
+        .product-info h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .product-info p {
+            color: #718096;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .signal-negative {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        /* ================= ALERTS ================= */
+
+        .alert-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .alert-card {
+            background: white;
+            border-radius: 16px;
+            padding: 21px;
+
+            border: 1px solid #e7ebf2;
+            border-left: 5px solid #dc2626;
+
+            box-shadow:
+                0 4px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .alert-card.above {
+            border-left-color: #16a34a;
+        }
+
+        .alert-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .alert-date {
+            color: #718096;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .alert-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 17px;
+        }
+
+        .metric-box {
+            background: #f8fafc;
+            padding: 13px;
+            border-radius: 10px;
+        }
+
+        .metric-box span {
+            display: block;
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .metric-box strong {
+            font-size: 15px;
+        }
+
+        /* ================= ROOT CAUSE ================= */
+
+        .signal-container {
+            display: grid;
+            gap: 19px;
+        }
+
+        .signal-row {
+            padding: 15px 0;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .signal-row:last-child {
+            border-bottom: none;
+        }
+
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .signal-name {
+            font-weight: 600;
+        }
+
+        .signal-value {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .progress-bg {
+            width: 100%;
+            height: 9px;
+            background: #e9edf3;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #dc2626;
+            border-radius: 20px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 13px;
+            text-align: left;
+            padding: 13px;
+        }
+
+        td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #edf0f5;
+            font-size: 13px;
+        }
+
+        /* ================= AI ================= */
+
+        .ai-card {
+            background: linear-gradient(
+                135deg,
+                #111827,
+                #1e293b
+            );
+
+            color: white;
+            border-radius: 18px;
+            padding: 28px;
+
+            box-shadow:
+                0 8px 25px rgba(15, 23, 42, 0.15);
+        }
+
+        .ai-card h2 {
+            font-size: 20px;
+        }
+
+        .ai-card-description {
+            color: #b7c1d0;
+            margin-top: 7px;
+            font-size: 14px;
+        }
+
+        .ai-button {
+            margin-top: 20px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #2563eb;
+            color: white;
+
+            padding: 12px 20px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .ai-button:hover {
+            background: #1d4ed8;
+        }
+
+        .ai-result {
+            display: none;
+
+            margin-top: 20px;
+            padding: 22px;
+
+            background: rgba(255,255,255,0.06);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 12px;
+
+            line-height: 1.75;
+
+            white-space: pre-wrap;
+
+            color: #e5e7eb;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 1100px) {
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 650px) {
+
+            header {
+                padding: 18px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .kpi-grid,
+            .product-grid,
+            .alert-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .alert-metrics {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="brand">
+
+        <h1>RetailIQ</h1>
+
+        <p>
+            AI Retail Data Intelligence & Root-Cause Analysis
+        </p>
+
+    </div>
+
+    <div class="backend-status">
+        ● Backend Connected
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<!-- ================= BUSINESS OVERVIEW ================= -->
+
+<h2 class="section-title">
+    Business Overview
+</h2>
+
+<p class="section-subtitle">
+    Real-time retail performance metrics from the RetailIQ analytics engine.
+</p>
+
+
+<div class="kpi-grid">
+
+    <div class="kpi-card">
+
+        <div class="kpi-label">
+            Total Revenue
+        </div>
+
+        <div
+            class="kpi-value"
+            id="totalRevenue">
+            Loading...
+        </div>
+
+        <div class="kpi-small">
+            Full-year revenue
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-label">
+            Total Units
+        </div>
+
+        <div
+            class="kpi-value"
+            id="totalUnits">
+            Loading...
+        </div>
+
+        <div class="kpi-small">
+            Units sold
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-label">
+            Total Margin
+        </div>
+
+        <div
+            class="kpi-value"
+            id="totalMargin">
+            Loading...
+        </div>
+
+        <div class="kpi-small">
+            Total gross margin
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-label">
+            Average Stock
+        </div>
+
+        <div
+            class="kpi-value"
+            id="averageStock">
+            Loading...
+        </div>
+
+        <div class="kpi-small">
+            Average stock on hand
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MONTHLY TREND ================= -->
+
+<h2 class="section-title">
+    Revenue Trend
+</h2>
+
+<p class="section-subtitle">
+    Monthly revenue movement across 2024.
+</p>
+
+
+<div class="card">
+
+    <div class="chart-box monthly-chart">
+
+        <canvas id="monthlyChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CATEGORY + CHANNEL ================= -->
+
+<h2 class="section-title">
+    Retail Analytics
+</h2>
+
+<p class="section-subtitle">
+    Category performance and channel contribution.
+</p>
+
+
+<div class="two-column">
+
+
+    <!-- CATEGORY -->
+
+    <div class="card">
+
+        <div class="card-title">
+            Revenue by Category
+        </div>
+
+        <div class="card-description">
+            Categories sorted by total revenue.
+        </div>
+
+        <div class="chart-box">
+
+            <canvas id="categoryChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHANNEL -->
+
+    <div class="card">
+
+        <div class="card-title">
+            Revenue Share by Channel
+        </div>
+
+        <div class="card-description">
+            Contribution of each sales channel.
+        </div>
+
+        <div class="chart-box">
+
+            <canvas id="channelChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PRODUCT / BRAND ================= -->
+
+<h2 class="section-title">
+    Product & Brand Highlights
+</h2>
+
+<p class="section-subtitle">
+    Selected retail entities associated with the current analysis.
+</p>
+
+
+<div class="product-grid">
+
+
+    <!-- FRUITS -->
+
+    <div class="product-card">
+
+        <div class="product-image">
+
+            <img
+                src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=900&q=80"
+                alt="Fresh fruits"
+                onerror="imageError(this)"
+            >
+
+        </div>
+
+        <div class="product-info">
+
+            <h3>Fruits</h3>
+
+            <p>
+                Revenue:
+                <strong id="fruitRevenue">
+                    Loading...
+                </strong>
+            </p>
+
+            <p>
+                Associated signal:
+                <span class="signal-negative">
+                    -31.30%
+                </span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- AMUL -->
+
+    <div class="product-card">
+
+        <div class="product-image">
+
+            <img
+                src="https://commons.wikimedia.org/wiki/Special:Redirect/file/AMUL%20LOGO.jpeg"
+                alt="Amul"
+                onerror="imageError(this)"
+            >
+
+        </div>
+
+        <div class="product-info">
+
+            <h3>Amul</h3>
+
+            <p>
+                Brand:
+                <strong>Amul</strong>
+            </p>
+
+            <p>
+                Category:
+                <strong>Dairy</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- BEVERAGES -->
+
+    <div class="product-card">
+
+        <div class="product-image">
+
+            <img
+                src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=900&q=80"
+                alt="Beverages"
+                onerror="imageError(this)"
+            >
+
+        </div>
+
+        <div class="product-info">
+
+            <h3>Beverages</h3>
+
+            <p>
+                Revenue:
+                <strong id="beverageRevenue">
+                    Loading...
+                </strong>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- SNACKS -->
+
+    <div class="product-card">
+
+        <div class="product-image">
+
+            <img
+                src="https://images.unsplash.com/photo-1599490659213-e2b9527bd087?auto=format&fit=crop&w=900&q=80"
+                alt="Snacks"
+                onerror="imageError(this)"
+            >
+
+        </div>
+
+        <div class="product-info">
+
+            <h3>Snacks</h3>
+
+            <p>
+                Revenue:
+                <strong id="snackRevenue">
+                    Loading...
+                </strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ANOMALY ALERTS ================= -->
+
+<h2 class="section-title">
+    Anomaly Alerts
+</h2>
+
+<p class="section-subtitle">
+    Forecast-based anomalies identified by the RetailIQ ML engine.
+</p>
+
+
+<div
+    id="alertContainer"
+    class="alert-grid">
+
+    <div class="alert-card">
+        Loading anomaly alerts...
+    </div>
+
+</div>
+
+
+<!-- ================= ANOMALY CHART ================= -->
+
+<h2 class="section-title">
+    Actual vs Expected Revenue
+</h2>
+
+<p class="section-subtitle">
+    Comparison of observed revenue against model expectations on detected anomaly dates.
+</p>
+
+
+<div class="card full-card">
+
+    <div class="chart-box">
+
+        <canvas id="anomalyChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ROOT CAUSE ================= -->
+
+<h2 class="section-title">
+    Root-Cause Signals
+</h2>
+
+<p class="section-subtitle">
+    Dimensions showing the strongest associated changes around the detected anomaly.
+</p>
+
+
+<div class="card">
+
+    <div
+        id="signalContainer"
+        class="signal-container">
+
+        Loading root-cause signals...
+
+    </div>
+
+</div>
+
+
+<!-- ================= CATEGORY TABLE ================= -->
+
+<h2 class="section-title">
+    Category Performance
+</h2>
+
+
+<div class="card">
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Category</th>
+
+                    <th>Revenue</th>
+
+                    <th>Units</th>
+
+                    <th>Margin</th>
+
+                    <th>Average Price</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="categoryTable">
+
+                <tr>
+
+                    <td colspan="5">
+                        Loading...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ================= AI ================= -->
+
+<h2 class="section-title">
+    AI Retail Analyst
+</h2>
+
+
+<div class="ai-card">
+
+    <h2>
+        RetailIQ AI Explanation
+    </h2>
+
+
+    <p class="ai-card-description">
+
+        The local AI analyst interprets the detected anomaly
+        using the evidence generated by the RetailIQ analytics engine.
+
+    </p>
+
+
+    <button
+        class="ai-button"
+        onclick="analyzeWithAI()">
+
+        Analyze Anomaly with AI
+
+    </button>
+
+
+    <div
+        id="aiResult"
+        class="ai-result">
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    RetailIQ • AI Retail Data Intelligence Platform
+
+</footer>
+
+
+</main>
+
+
+<script>
+
+
+/* =====================================================
+   API
+===================================================== */
+
+const API =
+    "http://127.0.0.1:8000";
+
+
+let categoryChart = null;
+let channelChart = null;
+let monthlyChart = null;
+let anomalyChart = null;
+
+
+/* =====================================================
+   IMAGE FALLBACK
+===================================================== */
+
+function imageError(image) {
+
+    const container =
+        image.parentElement;
+
+    image.style.display =
+        "none";
+
+    container.classList.add(
+        "image-fallback"
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT CURRENCY
+===================================================== */
+
+function money(value) {
+
+    return "₹" +
+        Number(value).toLocaleString(
+            "en-IN",
+            {
+                maximumFractionDigits: 2
+            }
+        );
+
+}
+
+
+/* =====================================================
+   FORMAT LAKHS
+===================================================== */
+
+function lakhs(value) {
+
+    return "₹" +
+        (
+            Number(value) / 100000
+        ).toFixed(0) +
+        "L";
+
+}
+
+
+/* =====================================================
+   MAIN ANALYTICS
+===================================================== */
+
+async function loadAnalytics() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/analytics`
+            );
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "totalRevenue"
+        ).textContent =
+            money(data.total_revenue);
+
+
+        document.getElementById(
+            "totalUnits"
+        ).textContent =
+            Number(
+                data.total_units
+            ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+            "totalMargin"
+        ).textContent =
+            money(data.total_margin);
+
+
+        document.getElementById(
+            "averageStock"
+        ).textContent =
+            Number(
+                data.average_stock
+            ).toFixed(2);
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Analytics error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CATEGORY ANALYTICS
+===================================================== */
+
+async function loadCategories() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/analytics/categories`
+            );
+
+        const data =
+            await response.json();
+
+
+        /* ================= TABLE ================= */
+
+        const table =
+            document.getElementById(
+                "categoryTable"
+            );
+
+        table.innerHTML = "";
+
+
+        data.forEach(row => {
+
+            const tr =
+                document.createElement("tr");
+
+
+            tr.innerHTML = `
+
+                <td>
+                    <strong>
+                        ${row.Category}
+                    </strong>
+                </td>
+
+                <td>
+                    ${money(row.revenue)}
+                </td>
+
+                <td>
+                    ${Number(row.units)
+                        .toLocaleString("en-IN")}
+                </td>
+
+                <td>
+                    ${money(row.margin)}
+                </td>
+
+                <td>
+                    ${money(row.average_price)}
+                </td>
+
+            `;
+
+
+            table.appendChild(tr);
+
+        });
+
+
+        /* ================= PRODUCT VALUES ================= */
+
+        const fruits =
+            data.find(
+                x => x.Category === "Fruits"
+            );
+
+
+        const beverages =
+            data.find(
+                x => x.Category === "Beverages"
+            );
+
+
+        const snacks =
+            data.find(
+                x => x.Category === "Snacks"
+            );
+
+
+        if(fruits) {
+
+            document.getElementById(
+                "fruitRevenue"
+            ).textContent =
+                money(fruits.revenue);
+
+        }
+
+
+        if(beverages) {
+
+            document.getElementById(
+                "beverageRevenue"
+            ).textContent =
+                money(beverages.revenue);
+
+        }
+
+
+        if(snacks) {
+
+            document.getElementById(
+                "snackRevenue"
+            ).textContent =
+                money(snacks.revenue);
+
+        }
+
+
+        /* ================= SORT ================= */
+
+        const sorted =
+            [...data].sort(
+                (a, b) =>
+                    b.revenue - a.revenue
+            );
+
+
+        const labels =
+            sorted.map(
+                x => x.Category
+            );
+
+
+        const revenue =
+            sorted.map(
+                x => x.revenue
+            );
+
+
+        /* ================= CATEGORY COLORS ================= */
+
+        const categoryColors = [
+            "#2563eb",
+            "#14b8a6",
+            "#f59e0b",
+            "#8b5cf6",
+            "#ec4899",
+            "#06b6d4",
+            "#10b981",
+            "#f97316"
+        ];
+
+
+        if(categoryChart) {
+
+            categoryChart.destroy();
+
+        }
+
+
+        categoryChart =
+            new Chart(
+
+                document.getElementById(
+                    "categoryChart"
+                ),
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Revenue",
+
+                                data:
+                                    revenue,
+
+                                backgroundColor:
+                                    categoryColors.slice(
+                                        0,
+                                        labels.length
+                                    ),
+
+                                borderColor:
+                                    "#ffffff",
+
+                                borderWidth:
+                                    1,
+
+                                borderRadius:
+                                    8,
+
+                                barPercentage:
+                                    0.72,
+
+                                categoryPercentage:
+                                    0.82
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        indexAxis: "y",
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        plugins: {
+
+                            legend: {
+
+                                display:
+                                    false
+
+                            },
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    label:
+                                    function(context) {
+
+                                        return (
+                                            " Revenue: " +
+                                            money(
+                                                context.raw
+                                            )
+                                        );
+
+                                    }
+
+                                }
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                beginAtZero:
+                                    true,
+
+                                grid: {
+
+                                    color:
+                                        "#e5e7eb"
+
+                                },
+
+                                ticks: {
+
+                                    callback:
+                                    function(value) {
+
+                                        return lakhs(
+                                            value
+                                        );
+
+                                    },
+
+                                    color:
+                                        "#64748b"
+
+                                }
+
+                            },
+
+                            y: {
+
+                                grid: {
+
+                                    display:
+                                        false
+
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#475569",
+
+                                    font: {
+
+                                        size:
+                                            12
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Category error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CHANNEL ANALYTICS
+===================================================== */
+
+async function loadChannels() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/analytics/channels`
+            );
+
+        const data =
+            await response.json();
+
+
+        const channelLabels =
+            data.map(
+                x => x.Channel
+            );
+
+
+        const channelRevenue =
+            data.map(
+                x => x.revenue
+            );
+
+
+        /*
+         * IMPORTANT:
+         * These colors fix the grey doughnut.
+         */
+
+        const channelColors = [
+            "#2563eb",
+            "#14b8a6",
+            "#f59e0b",
+            "#8b5cf6",
+            "#ec4899"
+        ];
+
+
+        if(channelChart) {
+
+            channelChart.destroy();
+
+        }
+
+
+        channelChart =
+            new Chart(
+
+                document.getElementById(
+                    "channelChart"
+                ),
+
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels:
+                            channelLabels,
+
+                        datasets: [
+
+                            {
+
+                                data:
+                                    channelRevenue,
+
+                                backgroundColor:
+                                    channelColors.slice(
+                                        0,
+                                        channelLabels.length
+                                    ),
+
+                                hoverBackgroundColor:
+                                    channelColors.slice(
+                                        0,
+                                        channelLabels.length
+                                    ),
+
+                                borderWidth:
+                                    4,
+
+                                borderColor:
+                                    "#ffffff",
+
+                                hoverOffset:
+                                    8
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        cutout:
+                            "62%",
+
+                        plugins: {
+
+                            legend: {
+
+                                position:
+                                    "bottom",
+
+                                labels: {
+
+                                    padding:
+                                        18,
+
+                                    usePointStyle:
+                                        true,
+
+                                    pointStyle:
+                                        "circle",
+
+                                    color:
+                                        "#475569"
+
+                                }
+
+                            },
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    label:
+                                    function(context) {
+
+                                        const total =
+                                            context.dataset.data
+                                                .reduce(
+                                                    (
+                                                        sum,
+                                                        value
+                                                    ) =>
+                                                        sum +
+                                                        Number(value),
+                                                    0
+                                                );
+
+
+                                        const percentage =
+                                            (
+                                                Number(
+                                                    context.raw
+                                                ) /
+                                                total
+                                            ) *
+                                            100;
+
+
+                                        return (
+                                            " " +
+                                            context.label +
+                                            ": " +
+                                            money(
+                                                context.raw
+                                            ) +
+                                            " (" +
+                                            percentage.toFixed(
+                                                1
+                                            ) +
+                                            "%)"
+                                        );
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Channel error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   MONTHLY REVENUE
+===================================================== */
+
+async function loadMonthlyRevenue() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/analytics/monthly`
+            );
+
+        const data =
+            await response.json();
+
+
+        const labels =
+            data.map(
+                x => x.Invoice_Date
+            );
+
+
+        const revenue =
+            data.map(
+                x => x.revenue
+            );
+
+
+        if(monthlyChart) {
+
+            monthlyChart.destroy();
+
+        }
+
+
+        monthlyChart =
+            new Chart(
+
+                document.getElementById(
+                    "monthlyChart"
+                ),
+
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Monthly Revenue",
+
+                                data:
+                                    revenue,
+
+                                tension:
+                                    0.35,
+
+                                fill:
+                                    true,
+
+                                pointRadius:
+                                    4,
+
+                                pointHoverRadius:
+                                    7,
+
+                                borderWidth:
+                                    3
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        interaction: {
+
+                            intersect:
+                                false,
+
+                            mode:
+                                "index"
+
+                        },
+
+                        plugins: {
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    label:
+                                    function(context) {
+
+                                        return (
+                                            " Revenue: " +
+                                            money(
+                                                context.raw
+                                            )
+                                        );
+
+                                    }
+
+                                }
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero:
+                                    false,
+
+                                ticks: {
+
+                                    callback:
+                                    function(value) {
+
+                                        return lakhs(
+                                            value
+                                        );
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Monthly revenue error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ANOMALIES
+===================================================== */
+
+async function loadAnomalies() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/anomalies`
+            );
+
+        const data =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "alertContainer"
+            );
+
+
+        container.innerHTML = "";
+
+
+        data.forEach(row => {
+
+            const below =
+                row.Residual < 0;
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                below
+                ? "alert-card"
+                : "alert-card above";
+
+
+            card.innerHTML = `
+
+                <div class="alert-top">
+
+                    <div>
+
+                        <div class="alert-title">
+
+                            ${
+                                below
+                                ? "Revenue Below Expected"
+                                : "Revenue Above Expected"
+                            }
+
+                        </div>
+
+                        <div class="alert-date">
+
+                            ${row.Sale_Date}
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        ${
+                            below
+                            ? "🔴"
+                            : "🟢"
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="alert-metrics">
+
+                    <div class="metric-box">
+
+                        <span>
+                            Actual Revenue
+                        </span>
+
+                        <strong>
+                            ${money(
+                                row.Actual_Revenue
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric-box">
+
+                        <span>
+                            Expected Revenue
+                        </span>
+
+                        <strong>
+                            ${money(
+                                row.Predicted_Revenue
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric-box">
+
+                        <span>
+                            Difference
+                        </span>
+
+                        <strong class="${
+                            below
+                            ? "signal-negative"
+                            : ""
+                        }">
+
+                            ${money(
+                                Math.abs(
+                                    row.Residual
+                                )
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric-box">
+
+                        <span>
+                            Residual Z-score
+                        </span>
+
+                        <strong>
+                            ${row.Residual_Z}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        });
+
+
+        /* ================= ANOMALY CHART ================= */
+
+        const labels =
+            data.map(
+                x => x.Sale_Date
+            );
+
+
+        const actual =
+            data.map(
+                x => x.Actual_Revenue
+            );
+
+
+        const predicted =
+            data.map(
+                x => x.Predicted_Revenue
+            );
+
+
+        if(anomalyChart) {
+
+            anomalyChart.destroy();
+
+        }
+
+
+        anomalyChart =
+            new Chart(
+
+                document.getElementById(
+                    "anomalyChart"
+                ),
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Actual Revenue",
+
+                                data:
+                                    actual,
+
+                                backgroundColor:
+                                    "#2563eb",
+
+                                borderRadius:
+                                    6
+
+                            },
+
+                            {
+
+                                label:
+                                    "Expected Revenue",
+
+                                data:
+                                    predicted,
+
+                                backgroundColor:
+                                    "#94a3b8",
+
+                                borderRadius:
+                                    6
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        plugins: {
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    label:
+                                    function(context) {
+
+                                        return (
+                                            context.dataset.label +
+                                            ": " +
+                                            money(
+                                                context.raw
+                                            )
+                                        );
+
+                                    }
+
+                                }
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            y: {
+
+                                ticks: {
+
+                                    callback:
+                                    function(value) {
+
+                                        return (
+                                            "₹" +
+                                            (
+                                                value /
+                                                100000
+                                            ).toFixed(1) +
+                                            "L"
+                                        );
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Anomaly error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ROOT CAUSE
+===================================================== */
+
+async function loadRootCause() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/root-cause`
+            );
+
+        const data =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "signalContainer"
+            );
+
+
+        const signals = [
+
+            {
+                name:
+                    "Category — " +
+                    data.category_signal.category,
+
+                value:
+                    data.category_signal.change_percent
+            },
+
+            {
+                name:
+                    "Brand — " +
+                    data.brand_signal.brand,
+
+                value:
+                    data.brand_signal.change_percent
+            },
+
+            {
+                name:
+                    "City — " +
+                    data.city_signal.city,
+
+                value:
+                    data.city_signal.change_percent
+            },
+
+            {
+                name:
+                    "Channel — " +
+                    data.channel_signal.channel,
+
+                value:
+                    data.channel_signal.change_percent
+            }
+
+        ];
+
+
+        container.innerHTML = "";
+
+
+        signals.forEach(signal => {
+
+            const percentage =
+                Math.abs(
+                    Number(
+                        signal.value
+                    )
+                );
+
+
+            const width =
+                Math.min(
+                    percentage * 2.5,
+                    100
+                );
+
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "signal-row";
+
+
+            row.innerHTML = `
+
+                <div class="signal-header">
+
+                    <span class="signal-name">
+                        ${signal.name}
+                    </span>
+
+                    <span class="signal-value">
+                        ${signal.value}%
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bg">
+
+                    <div
+                        class="progress"
+                        style="
+                            width:${width}%;
+                        "
+                    ></div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                row
+            );
+
+        });
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Root cause error:",
+            error
+        );
+
+
+        document.getElementById(
+            "signalContainer"
+        ).textContent =
+            "Unable to load root-cause signals.";
+
+    }
+
+}
+
+
+/* =====================================================
+   AI ANALYSIS
+===================================================== */
+
+async function analyzeWithAI() {
+
+    const result =
+        document.getElementById(
+            "aiResult"
+        );
+
+
+    result.style.display =
+        "block";
+
+
+    result.textContent =
+        "RetailIQ AI is analyzing the anomaly...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/ask-retailiq`,
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        result.textContent =
+            data.analysis;
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "AI error:",
+            error
+        );
+
+
+        result.textContent =
+            "Unable to connect to the AI analyst. Make sure FastAPI and Ollama are running.";
+
+    }
+
+}
+
+
+/* =====================================================
+   START APPLICATION
+===================================================== */
+
+loadAnalytics();
+
+loadCategories();
+
+loadChannels();
+
+loadMonthlyRevenue();
+
+loadAnomalies();
+
+loadRootCause();
+
+
+</script>
+
+
+</body>
+
+</html>

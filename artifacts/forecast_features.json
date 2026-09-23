@@ -1,0 +1,15 @@
+[
+    "Lag_1",
+    "Lag_2",
+    "Lag_3",
+    "Lag_7",
+    "Lag_14",
+    "Rolling_Mean_7",
+    "Rolling_Mean_14",
+    "Day_of_Week",
+    "Day_of_Month",
+    "Month",
+    "Day_Sin",
+    "Day_Cos",
+    "Trend"
+]

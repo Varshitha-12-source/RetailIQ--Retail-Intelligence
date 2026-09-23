@@ -1,0 +1,43 @@
+{
+    "anomaly_date": "2024-10-27",
+    "anomaly_summary": {
+        "actual_revenue": 90752.38,
+        "predicted_revenue": 116786.72,
+        "revenue_difference": -26034.34,
+        "residual_z_score": -2.35,
+        "direction": "Lower than expected"
+    },
+    "category_signal": {
+        "category": "Fruits",
+        "change_percent": -31.3
+    },
+    "brand_signal": {
+        "brand": "Parle",
+        "change_percent": -36.44
+    },
+    "city_signal": {
+        "city": "Pune",
+        "change_percent": -35.73
+    },
+    "channel_signal": {
+        "channel": "Offline",
+        "change_percent": -31.89
+    },
+    "inventory_signal": {
+        "average_stock": 261.09,
+        "previous_average_stock": 277.25,
+        "stock_change_percent": -5.83,
+        "low_stock_records": 4,
+        "previous_low_stock_records": 37,
+        "low_stock_change_percent": -89.19
+    },
+    "pricing_margin_signal": {
+        "average_selling_price": 125.18,
+        "previous_average_selling_price": 128.12,
+        "selling_price_change_percent": -2.3,
+        "revenue_change_percent": -11.81,
+        "margin_change_percent": -12.68,
+        "margin_percentage_difference": -0.2
+    },
+    "interpretation_rule": "These are associated signals identified from the available retail data. They do not establish causation."
+}
